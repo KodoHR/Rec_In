@@ -1,0 +1,1176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kodo HR · Proceso de Selección & Templates</title>
+<style>
+  :root{
+    --cream:#F5EFDF;
+    --black:#0A0A0A;
+    --lime:#C8F000;
+    --purple:#8C93D9;
+    --charcoal:#2B2B29;
+    --white:#FFFFFF;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--cream);
+    color:var(--black);
+    font-family:Arial, Helvetica, sans-serif;
+    line-height:1.5;
+  }
+  .blocky{font-family:Arial, Helvetica, sans-serif; font-weight:900; letter-spacing:-0.01em;}
+  .rounded{font-family:Arial, Helvetica, sans-serif; font-weight:700;}
+
+  /* ---------- HEADER ---------- */
+  header{
+    position:relative;
+    background:var(--black);
+    color:var(--cream);
+    padding:56px 24px 64px;
+    overflow:hidden;
+    text-align:center;
+  }
+  header .sunburst{
+    position:absolute;
+    top:-60px; right:-60px;
+    width:220px; height:220px;
+    opacity:0.9;
+    pointer-events:none;
+  }
+  header .sunburst2{
+    position:absolute;
+    bottom:-70px; left:-50px;
+    width:180px; height:180px;
+    opacity:0.7;
+    pointer-events:none;
+  }
+  .logo{
+    display:inline-flex;
+    align-items:center;
+    gap:4px;
+    font-size:2.6rem;
+    color:var(--white);
+    margin-bottom:18px;
+  }
+  .logo img{ height:60px; width:auto; display:block; }
+  #logo-fallback{
+    color:var(--white);
+    font-size:2.6rem;
+    letter-spacing:0.01em;
+  }
+  header h1{
+    font-size:2.1rem;
+    margin:0 0 10px;
+    color:var(--white);
+    max-width:720px;
+    margin-left:auto; margin-right:auto;
+  }
+  header p.sub{
+    color:var(--purple);
+    font-family:Arial, Helvetica, sans-serif;
+    font-weight:600;
+    font-size:1.05rem;
+    margin:0;
+  }
+
+  /* ---------- NAV ---------- */
+  .tabbar{
+    position:sticky; top:0; z-index:50;
+    display:flex; justify-content:center; gap:10px;
+    background:var(--cream);
+    padding:16px 12px;
+    border-bottom:2px solid var(--black);
+  }
+  .tab-btn{
+    font-family:Arial, Helvetica, sans-serif;
+    font-weight:700;
+    font-size:0.95rem;
+    padding:10px 26px;
+    border-radius:100px;
+    border:2px solid var(--black);
+    background:var(--white);
+    color:var(--black);
+    cursor:pointer;
+    transition:all .15s ease;
+  }
+  .tab-btn.active{
+    background:var(--black);
+    color:var(--lime);
+  }
+  .tab-btn:hover{transform:translateY(-2px);}
+
+  main{max-width:940px; margin:0 auto; padding:40px 24px 100px;}
+  .view{display:none;}
+  .view.active{display:block;}
+
+  section.intro-block{
+    margin-bottom:32px;
+  }
+  section.intro-block h2{
+    font-size:1.5rem;
+  }
+  section.intro-block p{
+    max-width:680px;
+  }
+
+  .badge{
+    display:inline-block;
+    background:var(--lime);
+    color:var(--black);
+    font-family:Arial, Helvetica, sans-serif;
+    font-weight:700;
+    font-size:0.75rem;
+    text-transform:uppercase;
+    letter-spacing:0.04em;
+    padding:5px 14px;
+    border-radius:100px;
+    margin-bottom:14px;
+  }
+
+  /* ---------- PROCESO TIMELINE (interactiva) ---------- */
+  .timeline{
+    position:relative;
+    display:flex; flex-direction:column; gap:14px;
+    margin-top:28px;
+    padding-left:30px;
+  }
+  .timeline::before{
+    content:"";
+    position:absolute;
+    left:11px; top:8px; bottom:8px;
+    width:3px;
+    background:var(--black);
+  }
+  .step{
+    position:relative;
+    background:var(--white);
+    border:2px solid var(--black);
+    border-radius:16px;
+    overflow:hidden;
+  }
+  .step:nth-child(odd){border-left:8px solid var(--lime);}
+  .step:nth-child(even){border-left:8px solid var(--purple);}
+  .step::before{
+    content:"";
+    position:absolute;
+    left:-30px; top:24px;
+    width:14px; height:14px;
+    border-radius:50%;
+    background:var(--black);
+    border:3px solid var(--cream);
+  }
+  .step-header{
+    display:flex; align-items:center; gap:16px;
+    padding:18px 20px;
+    cursor:pointer;
+    user-select:none;
+  }
+  .step-header:hover{background:rgba(200,240,0,0.12);}
+  .step .num{
+    font-family:Arial, Helvetica, sans-serif;
+    font-weight:900;
+    font-size:1.7rem;
+    color:var(--purple);
+    min-width:48px;
+  }
+  .step:nth-child(odd) .num{color:var(--black); -webkit-text-stroke:1px var(--lime);}
+  .step-header h3{
+    margin:0;
+    font-family:Arial, Helvetica, sans-serif;
+    font-size:1.1rem;
+    flex:1;
+  }
+  .chevron{
+    font-size:1.1rem;
+    font-weight:700;
+    transition:transform .2s ease;
+    color:var(--black);
+    flex-shrink:0;
+  }
+  .step.open .chevron{transform:rotate(180deg);}
+  .step-detail{
+    max-height:0;
+    overflow:hidden;
+    transition:max-height .3s ease;
+  }
+  .step.open .step-detail{max-height:400px;}
+  .step-detail-inner{
+    padding:0 20px 20px 84px;
+  }
+  .step-detail-inner p{margin:0; font-size:0.94rem; color:#333;}
+  .step-detail-inner ul{margin:8px 0 0; padding-left:18px; font-size:0.9rem; color:#333;}
+  .step-detail-inner ul li{margin-bottom:3px;}
+  .step-detail-inner a{color:var(--black); font-weight:700;}
+  .step-tpls{
+    margin-top:14px;
+    padding-top:14px;
+    border-top:1px dashed #999;
+  }
+  .step-tpls-label{
+    display:block;
+    font-size:0.78rem;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:0.03em;
+    color:#666;
+    margin-bottom:8px;
+  }
+  .tpl-chip{
+    display:inline-block;
+    background:var(--white);
+    border:2px solid var(--black);
+    border-radius:100px;
+    font-family:Arial, Helvetica, sans-serif;
+    font-weight:700;
+    font-size:0.8rem;
+    padding:6px 14px;
+    margin:0 6px 6px 0;
+    cursor:pointer;
+  }
+  .tpl-chip:hover{background:var(--lime);}
+
+  /* ---------- CRITERIOS / PROTOCOLOS ---------- */
+  .protocol-list{
+    display:flex; flex-direction:column; gap:16px;
+    margin-top:26px;
+  }
+  .protocol-card{
+    display:flex; gap:16px;
+    background:var(--white);
+    border:2px solid var(--black);
+    border-radius:16px;
+    padding:20px 22px;
+  }
+  .protocol-card:nth-child(odd){border-left:8px solid var(--purple);}
+  .protocol-card:nth-child(even){border-left:8px solid var(--lime);}
+  .protocol-card .p-icon{font-size:1.6rem; line-height:1;}
+  .protocol-card h3{
+    margin:0 0 8px;
+    font-family:Arial, Helvetica, sans-serif;
+    font-size:1.05rem;
+  }
+  .protocol-card .situacion{
+    display:inline-block;
+    font-size:0.7rem;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:0.04em;
+    color:#666;
+    margin-bottom:4px;
+  }
+  .protocol-card p{margin:0 0 4px; font-size:0.92rem; color:#333;}
+  .protocol-card p:last-child{margin-bottom:0;}
+  .protocol-card .accion{font-weight:700; color:var(--black);}
+
+  /* ---------- TEMPLATES ---------- */
+  .cat-nav{
+    display:flex; flex-wrap:wrap; gap:10px;
+    margin:24px 0 8px;
+  }
+  .cat-btn{
+    font-family:Arial, Helvetica, sans-serif;
+    font-weight:600;
+    font-size:0.85rem;
+    padding:8px 18px;
+    border-radius:100px;
+    border:2px solid var(--black);
+    background:var(--white);
+    cursor:pointer;
+  }
+  .cat-btn.active{background:var(--purple); color:var(--black);}
+
+  .cat-title{
+    font-family:Arial, Helvetica, sans-serif;
+    font-size:1.3rem;
+    margin:32px 0 4px;
+    padding-top:8px;
+  }
+  .cat-desc{margin:0 0 16px; color:#444; font-size:0.9rem;}
+
+  .card-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(230px,1fr));
+    gap:18px;
+  }
+  .tpl-card{
+    background:var(--white);
+    border:2px solid var(--black);
+    border-radius:14px;
+    padding:18px;
+    cursor:pointer;
+    transition:transform .15s ease, box-shadow .15s ease;
+    transform:rotate(var(--r,-1deg));
+    position:relative;
+  }
+  .tpl-card:nth-child(2n){--r:1deg;}
+  .tpl-card:nth-child(3n){--r:-0.5deg;}
+  .tpl-card:hover{
+    transform:rotate(0deg) translateY(-3px);
+    box-shadow:6px 6px 0 var(--black);
+  }
+  .tpl-card .icon{font-size:1.4rem; margin-bottom:8px; display:block;}
+  .tpl-card h4{
+    margin:0 0 6px;
+    font-family:Arial, Helvetica, sans-serif;
+    font-size:1rem;
+  }
+  .tpl-card span.open{
+    display:inline-block;
+    margin-top:8px;
+    font-size:0.78rem;
+    font-weight:600;
+    color:var(--black);
+    background:var(--lime);
+    padding:3px 10px;
+    border-radius:100px;
+  }
+
+  /* ---------- MODAL ---------- */
+  .overlay{
+    display:none;
+    position:fixed; inset:0;
+    background:rgba(10,10,10,0.55);
+    z-index:100;
+    align-items:center; justify-content:center;
+    padding:20px;
+  }
+  .overlay.active{display:flex;}
+  .modal{
+    background:var(--cream);
+    border:3px solid var(--black);
+    border-radius:20px;
+    max-width:640px; width:100%;
+    max-height:85vh;
+    display:flex; flex-direction:column;
+    box-shadow:10px 10px 0 var(--purple);
+  }
+  .modal-head{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:18px 22px;
+    border-bottom:2px solid var(--black);
+  }
+  .modal-head h3{
+    margin:0;
+    font-family:Arial, Helvetica, sans-serif;
+    font-size:1.15rem;
+  }
+  .modal-close{
+    background:var(--black); color:var(--lime);
+    border:none; width:32px; height:32px; border-radius:50%;
+    font-size:1rem; cursor:pointer;
+  }
+  .modal-body{
+    padding:20px 22px;
+    overflow-y:auto;
+  }
+  .modal-body pre{
+    white-space:pre-wrap;
+    font-family:Arial, Helvetica, sans-serif;
+    font-size:0.88rem;
+    line-height:1.6;
+    background:var(--white);
+    border:2px solid var(--black);
+    border-radius:12px;
+    padding:16px;
+    margin:0;
+  }
+  .modal-foot{
+    padding:16px 22px 20px;
+    display:flex; justify-content:flex-end; gap:10px;
+  }
+  .copy-btn{
+    font-family:Arial, Helvetica, sans-serif;
+    font-weight:700;
+    font-size:0.9rem;
+    background:var(--black);
+    color:var(--lime);
+    border:2px solid var(--black);
+    padding:10px 22px;
+    border-radius:100px;
+    cursor:pointer;
+  }
+  .copy-btn:hover{background:var(--lime); color:var(--black);}
+  .copy-btn.copied{background:var(--purple); color:var(--black); border-color:var(--black);}
+
+  footer{
+    text-align:center;
+    padding:30px 20px 50px;
+    color:#555;
+    font-size:0.85rem;
+  }
+  footer .heart{color:var(--black);}
+
+  @media(max-width:600px){
+    header h1{font-size:1.5rem;}
+    .step-detail-inner{padding-left:20px;}
+    .timeline{padding-left:24px;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <svg class="sunburst" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+    <g stroke="#C8F000" stroke-width="4">
+      <line x1="100" y1="100" x2="100" y2="0"/>
+      <line x1="100" y1="100" x2="100" y2="200"/>
+      <line x1="100" y1="100" x2="0" y2="100"/>
+      <line x1="100" y1="100" x2="200" y2="100"/>
+      <line x1="100" y1="100" x2="30" y2="30"/>
+      <line x1="100" y1="100" x2="170" y2="30"/>
+      <line x1="100" y1="100" x2="30" y2="170"/>
+      <line x1="100" y1="100" x2="170" y2="170"/>
+    </g>
+  </svg>
+  <svg class="sunburst2" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+    <g fill="#8C93D9" opacity="0.85">
+      <polygon points="100,10 130,100 70,100"/>
+      <polygon points="100,190 130,100 70,100" opacity="0.6"/>
+      <polygon points="10,100 100,130 100,70" opacity="0.75"/>
+    </g>
+  </svg>
+  <div class="logo">
+    <img src="logo-kodo.png" alt="Kodo" onerror="this.style.display='none'; document.getElementById('logo-fallback').style.display='inline-flex';">
+    <span id="logo-fallback" class="blocky" style="display:none; align-items:center;">KODO</span>
+  </div>
+  <h1 class="rounded">Proceso de Selección &amp; Biblioteca de Templates</h1>
+  <p class="sub">Guía interna del equipo · Reclutamiento &amp; Selección 🖤</p>
+</header>
+
+<div class="tabbar">
+  <button class="tab-btn active" data-view="proceso">📋 Proceso</button>
+  <button class="tab-btn" data-view="templates">✦ Templates</button>
+  <button class="tab-btn" data-view="criterios">🧭 Criterios</button>
+</div>
+
+<main>
+
+  <!-- ===================== PROCESO ===================== -->
+  <div id="proceso" class="view active">
+    <section class="intro-block">
+      <span class="badge">De punta a punta</span>
+      <h2 class="rounded">Así laburamos cada búsqueda</h2>
+      <p>Este es el recorrido completo de una búsqueda en Kodo, desde que entra el pedido del cliente hasta el día de ingreso del candidato. Cada paso tiene su template asociado — lo encontrás en la pestaña Templates.</p>
+    </section>
+
+    <p class="cat-desc" style="margin-top:-10px;">👉 Tocá cada paso para ver el detalle.</p>
+
+    <div class="timeline" id="timeline"></div>
+  </div>
+
+  <!-- ===================== TEMPLATES ===================== -->
+  <div id="templates" class="view">
+    <section class="intro-block">
+      <span class="badge">Copiar y pegar</span>
+      <h2 class="rounded">Biblioteca de templates</h2>
+      <p>Tocá cualquier card para abrir el template completo y copiarlo con un click. Reemplazá lo que está entre [corchetes] por la info real de cada búsqueda.</p>
+    </section>
+
+    <div class="cat-nav">
+      <button class="cat-btn active" data-cat="all">Todos</button>
+      <button class="cat-btn" data-cat="general">Gestión general</button>
+      <button class="cat-btn" data-cat="cliente">Cliente / Hiring Manager</button>
+      <button class="cat-btn" data-cat="candidatos">Candidatos</button>
+    </div>
+
+    <div id="tpl-container"></div>
+  </div>
+
+  <!-- ===================== CRITERIOS / PROTOCOLOS ===================== -->
+  <div id="criterios" class="view">
+    <section class="intro-block">
+      <span class="badge">Cómo resolvemos</span>
+      <h2 class="rounded">Criterios &amp; Protocolos de acción</h2>
+      <p>Situaciones que se repiten en cualquier búsqueda y cómo las resolvemos siempre de la misma manera, para sostener el mismo criterio en todo el equipo.</p>
+    </section>
+
+    <div id="protocol-container"></div>
+  </div>
+
+</main>
+
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <div class="modal-head">
+      <h3 id="modal-title" class="rounded"></h3>
+      <button class="modal-close" id="modal-close">✕</button>
+    </div>
+    <div class="modal-body">
+      <pre id="modal-content"></pre>
+    </div>
+    <div class="modal-foot">
+      <button class="copy-btn" id="modal-copy">📋 Copiar template</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  Equipo Kodo · Reclutamiento &amp; Selección <span class="heart">🖤</span> — actualizado julio 2026
+</footer>
+
+<script>
+const templates = [
+  // ---- GESTIÓN GENERAL ----
+  {
+    id:"jd-interna", cat:"general", icon:"📝", title:"JD interna preliminar",
+    content:`Empresa: [nombre] — [industria / tamaño / cultura en 1 línea]
+Momento del negocio: [qué está pasando en la empresa que motiva esta búsqueda]
+Contexto de la búsqueda: [por qué se abre el rol, cómo impacta en el negocio, urgencia]
+Tipo de búsqueda: [ ] Reemplazo  [ ] Rol nuevo
+Nombre del rol / seniority:
+Reporta a:
+Gente a cargo: [sí/no — cuántas personas]
+Misión del rol: [qué resuelve, en 1-2 líneas]
+
+Responsabilidades principales:
+-
+-
+-
+
+Requisitos excluyentes:
+-
+-
+
+Requisitos deseables:
+-
+
+Banda salarial: [bruto/neto — moneda]
+Beneficios:
+Modalidad: [presencial/híbrido/remoto — días]
+Ubicación:
+Fecha estimada de inicio:
+
+Dudas / a validar con cliente:
+-
+
+Perfiles de calibración (2-3):
+1. [nombre/link + por qué se eligió]
+2.
+3. `
+  },
+  {
+    id:"esquema-reunion", cat:"general", icon:"🤝", title:"Esquema de reunión con cliente",
+    content:`QUÉ LLEVAMOS
+- JD interna preliminar completa
+- 2-3 perfiles de calibración
+- Dudas puntuales relevadas
+
+QUÉ NECESITAMOS VALIDAR EN LA REUNIÓN
+- Contexto de negocio y por qué se abre la búsqueda
+- JD final (ajustes sobre la preliminar)
+- Proceso: cantidad de entrevistas, con quién, modalidad, tiempos
+- Disponibilidad horaria de los entrevistadores
+- Preocupacionales: si aplican, cómo se gestionan
+- Timing esperado de la primera terna
+- Canal de comunicación y otros interlocutores
+
+NO PUEDE FALTAR AL CIERRE DE LA REUNIÓN
+- JD aprobada
+- Próximos pasos y fecha de la próxima terna acordada`
+  },
+  {
+    id:"esquema-entrevista", cat:"general", icon:"🎤", title:"Esquema de entrevista con candidatos",
+    content:`APERTURA (5 min)
+Presentación propia + contexto de Kodo como consultora.
+
+CONTEXTO DE EMPRESA Y ROL (5-10 min)
+Momento del negocio, por qué se abre la búsqueda, misión del rol.
+
+VALIDACIÓN DE PERFIL (20-25 min)
+[Preguntas específicas según los requisitos/criterios del rol — completar por búsqueda]
+-
+-
+-
+
+ESPACIO ABIERTO (10 min)
+"Contame lo que quieras sumar que no te pregunté."
+
+CIERRE
+Próximos pasos del proceso + timing esperado.`
+  },
+  {
+    id:"prompt-analisis-4c", cat:"general", icon:"🧠", title:"Prompt de análisis de candidatos (4C)",
+    content:`CONTEXTO
+Sos una asistente de análisis para un proceso de selección en Kodo HR. Estoy evaluando candidatos para el rol de [Nombre del rol] en [Empresa]. Te comparto la JD aprobada y la información relevada de cada candidato (CV, LinkedIn, notas de la entrevista).
+
+CONTENIDO
+JD aprobada:
+[Pegar JD completa: misión del rol, responsabilidades, requisitos excluyentes y deseables, banda salarial, modalidad]
+
+Candidatos a analizar:
+Candidato 1 – [Nombre]: [Pegar CV / resumen / notas de entrevista]
+Candidato 2 – [Nombre]: [Pegar CV / resumen / notas de entrevista]
+Candidato 3 – [Nombre]: [Pegar CV / resumen / notas de entrevista]
+
+CRITERIO
+Para cada candidato, evaluá:
+1. Fit con los requisitos excluyentes (uno por uno: cumple o no, y por qué).
+2. Fit con los requisitos deseables.
+3. Fortalezas específicas para el desafío del rol (con evidencia concreta del CV/entrevista, no genérica).
+4. Señales de riesgo o alertas (gaps, expectativa salarial fuera de banda, motivadores de cambio poco claros, etc.).
+5. Comparación relativa: ordená a los candidatos de mayor a menor fit para este rol puntual, explicando la razón de cada posición en el ranking.
+
+COMPROBACIÓN
+Antes de responder:
+- Citá evidencia textual concreta de cada CV/nota para cada afirmación — no generalices sin sustento.
+- Marcá explícitamente los supuestos que estés haciendo si falta información.
+- Señalá qué información adicional habría que relevar en una segunda instancia antes de armar la terna.
+- Si algún candidato no cumple un excluyente, decilo de forma directa, sin suavizarlo.`
+  },
+
+  // ---- CLIENTE / HIRING MANAGER ----
+  {
+    id:"correo-kickoff", cat:"cliente", icon:"🚀", title:"Correo de kickoff a cliente",
+    content:`Asunto: ¡Arrancamos con la búsqueda de [Rol]! 🚀
+
+Hola [Nombre],
+
+¡Un gusto! Soy [Nombre], y voy a estar liderando la búsqueda de [Rol] para [Empresa].
+
+Ya me metí de lleno a estudiar la posición y quiero coordinar un breve meet para terminar de calibrar algunos puntos con vos.
+
+De paso, te comparto 2-3 perfiles a modo de referencia (no son necesariamente candidatos del proceso, sirven para calibrar juntos qué sí y qué no):
+[Perfil 1 – link]
+[Perfil 2 – link]
+[Perfil 3 – link]
+
+¿Tenés disponibilidad esta semana? Te dejo mi calendario: [link]
+
+¡Nos vemos pronto! 🖤
+[Nombre] – Equipo Kodo`
+  },
+  {
+    id:"jd-aprobada", cat:"cliente", icon:"✅", title:"JD aprobada (formato final)",
+    content:`Es el mismo documento que la JD interna preliminar — ambas son internas, esta es simplemente el estadio final una vez validado con el cliente en la reunión de kickoff. La única versión que sale de Kodo hacia afuera es la JD pública para HeyOmia.
+
+Empresa: [nombre] — [industria / tamaño / cultura en 1 línea]
+Momento del negocio: [qué está pasando en la empresa que motiva esta búsqueda]
+Contexto de la búsqueda: [por qué se abre el rol, cómo impacta en el negocio, urgencia]
+Tipo de búsqueda: [ ] Reemplazo  [ ] Rol nuevo
+Nombre del rol / seniority:
+Reporta a:
+Gente a cargo: [sí/no — cuántas personas]
+Misión del rol: [qué resuelve, en 1-2 líneas]
+
+Responsabilidades principales:
+-
+-
+-
+
+Requisitos excluyentes:
+-
+-
+
+Requisitos deseables:
+-
+
+Banda salarial: [bruto/neto — moneda]
+Beneficios:
+Modalidad: [presencial/híbrido/remoto — días]
+Ubicación:
+Fecha estimada de inicio:
+
+El proceso: [cantidad de instancias, con quién, timing estimado]
+
+Documento validado y aprobado por [Nombre cliente] – [fecha]`
+  },
+  {
+    id:"correo-terna", cat:"cliente", icon:"📋", title:"Correo de envío de terna",
+    content:`Asunto: Terna [Rol] – [N° de terna] 📋
+
+Hola [Nombre],
+
+Te compartimos la primera terna para [Rol]. Armamos el informe con el detalle de cada perfil para que puedas revisarlo con tranquilidad.
+
+[Adjunto: Informe de terna]
+
+Nos encantaría conocer tu impresión: ¿con quién te gustaría avanzar? Contanos cómo, cuándo y dónde te queda cómodo coordinar.
+
+Si hay algún perfil que no te cierra, nos sirve mucho que nos cuentes el motivo con el mayor detalle posible — nos ayuda a afinar la búsqueda para la próxima ronda.
+
+Quedamos atentas. ¡Gracias! 🖤
+[Nombre] – Equipo Kodo`
+  },
+  {
+    id:"informe-terna", cat:"cliente", icon:"📊", title:"Informe de Perfil — formato Kodo",
+    content:`Se arma un Informe de Perfil por cada candidato de la terna (uno por persona, mismo formato) — no es un único documento con los 3 perfiles listados.
+
+INFORME DE PERFIL
+
+[Nombre completo del candidato]
+Posición: [Nombre del rol]
+LinkedIn: [link]
+
+RESUMEN
+[Párrafo de síntesis: background, expertise clave, y por qué este perfil es relevante para el desafío del rol — 4 a 6 líneas]
+
+ALINEACIÓN CON DESAFÍOS CLAVE (AUDITORÍA TÉCNICA Y FIT CULTURAL)
+
+Perfil y Aspectos a Considerar
+Trayectoria: [evolución de carrera, hitos relevantes que expliquen su nivel actual]
+Motivación de Cambio: [por qué se mueve de su posición actual/anterior y qué lo trajo a este proceso puntual]
+Competencias Destacadas:
+- [Competencia 1]: [descripción con ejemplo concreto relevado en la entrevista]
+- [Competencia 2]: [descripción con ejemplo concreto relevado en la entrevista]
+
+LOGÍSTICA Y COMPENSACIÓN
+Zona de residencia: [...]
+Movilidad propia: [...]
+Compu: [...]
+Modalidad de contratación: [relación de dependencia / contractor-monotributo / sin preferencia]
+Disponibilidad para entrevista: [...]
+Compensación: [pretensión salarial]
+Disponibilidad para ingresar: [inmediata / a convenir / con preaviso de X días]
+Viaje programado: [sí/no — fechas si aplica]
+
+APORTE DE VALOR: PUNTOS DE REFLEXIÓN
+Con el propósito de acompañar la toma de decisiones estratégicas para el área, les acercamos los siguientes puntos de análisis:
+Potencial vs. Experiencia: [qué trae de más/de menos respecto al perfil ideal, y cómo lo compensa]
+Motivación y Retención: [qué tan alineada está la propuesta con sus objetivos de largo plazo]
+Fit con el equipo: [cómo encaja su estilo de trabajo con la dinámica del área/equipo]
+
+FOCO DEL ROL | EXPERIENCIA VALIDADA EN ENTREVISTA
+[Foco clave 1 del rol] | Fit: [Alto/Medio/Bajo]. [Evidencia concreta relevada en la entrevista que sustenta ese fit]
+[Foco clave 2 del rol] | Fit: [...]. [...]
+[Foco clave 3 del rol] | Fit: [...]. [...]
+[Foco clave 4 del rol] | Fit: [...]. [...]`
+  },
+  {
+    id:"correo-definiciones", cat:"cliente", icon:"🎯", title:"Correo de solicitud de definiciones",
+    content:`Asunto: ¡Vamos por [Nombre candidato]! Necesitamos definir algunos puntos 🎯
+
+Hola [Nombre],
+
+¡Excelente noticia que quieran avanzar con [Nombre candidato]! Para poder cerrar el proceso, necesitamos que nos ayudes a definir:
+
+PREOCUPACIONALES
+- ¿Los gestionan ustedes o nosotras?
+- En caso de gestionarlos ustedes, ¿con quién coordinamos?
+
+OFERTA
+- ¿La envían ustedes o la armamos nosotras con nuestro modelo?
+- Condiciones a confirmar: salario, beneficios, vacaciones, fecha preliminar de ingreso (sujeta a ok de preocupacionales)
+
+Apenas tengamos esto, avanzamos con [Nombre candidato] a toda velocidad 🚀
+
+¡Gracias! 🖤
+[Nombre] – Equipo Kodo`
+  },
+  {
+    id:"offer-modelo", cat:"cliente", icon:"💼", title:"Modelo de Offer propia",
+    content:`PROPUESTA DE INCORPORACIÓN
+[Fecha]
+
+Estimado/a [Nombre candidato],
+
+En nombre de [Empresa cliente] y de todo el equipo de Kodo, ¡queremos darte la bienvenida! Es un gusto poder formalizar esta propuesta para que te sumes como [Rol].
+
+DETALLE DE LA PROPUESTA
+- Posición: [...]
+- Reporta a: [...]
+- Modalidad: [...]
+- Remuneración: [...]
+- Beneficios: [...]
+- Vacaciones: [...]
+- Fecha estimada de ingreso: [...] (sujeta a resultado de preocupacionales)
+
+Esta propuesta tiene validez hasta el [fecha]. Cualquier duda, estamos a disposición para conversarlo.
+
+¡Muchas ganas de que este próximo paso sea el inicio de algo grande! 🖤
+Equipo Kodo, en representación de [Empresa cliente]`
+  },
+  {
+    id:"correo-oferta", cat:"cliente", icon:"🎉", title:"Correo de envío de oferta",
+    content:`Asunto: ¡Tu propuesta de [Empresa]! 🎉
+
+Hola [Nombre],
+
+¡Llegó el momento! Te adjuntamos la propuesta formal para sumarte a [Empresa] como [Rol].
+
+[Adjunto: Offer]
+
+Cualquier duda que tengas sobre las condiciones, estamos para ayudarte a resolverla. Quedamos atentas a tu confirmación.
+
+¡Estamos re contentas de acompañarte en este paso! 🖤
+[Nombre] – Equipo Kodo
+CC: [contacto cliente]`
+  },
+  {
+    id:"correo-hm-ficha", cat:"cliente", icon:"📄", title:"Correo a Hiring Manager con Ficha de Ingreso",
+    content:`Asunto: 🌟Todo listo para el lunes | Kit de Despegue de [Nombre de Ingresante]
+
+Hola, [Nombre Hiring Manager]! Espero que estés muy bien!
+
+Estamos en la cuenta regresiva para que [Nombre de Ingresante] se sume al equipo el próximo [Día de ingreso]. Estamos convencidas de que su perfil [características del perfil] les aportará [aporte de valor relacionado a desafío de rol].
+
+🎁 Para que su aterrizaje sea un éxito desde el minuto cero, les preparamos un regalo especial: el "Smart Profile" de [Nombre de Ingresante].
+
+No es un simple legajo, es un Manual de Usuario Estratégico que preparamos especialmente para ustedes. Incluye:
+- Sus Drivers de motivación (qué la enciende).
+- Tips de Liderazgo para potenciar su estilo.
+- Un Onboarding Hack para sus primeros 15 días.
+
+Por último, para nosotras la mejora es constante. Les robo 2 minutos de reloj (literal) para que nos cuenten cómo vivieron la experiencia trabajando con nosotras en esta búsqueda y seguir puliendo nuestra puntería:
+
+👉 Link a Encuesta de Satisfacción Kodo: https://docs.google.com/forms/d/e/1FAIpQLSdIOnLIltPx_poswDNyqnUrBbprmIFl_hTHNcKX-Vmkna1wqQ/viewform
+
+¡Gracias por confiar en nosotras en este proceso! 🖤`
+  },
+  {
+    id:"ficha-ingreso", cat:"cliente", icon:"🗂️", title:"Ficha de Ingreso",
+    content:`FICHA DE INGRESO – [Nombre candidato]
+Rol: [...] | Empresa: [...] | Fecha de ingreso: [...]
+
+SOBRE LA PERSONA
+Motivadores del cambio: [...]
+Estilo de trabajo / cómo le gusta que lo/a acompañen: [...]
+Fortalezas destacadas en el proceso: [...]
+Puntos de atención para el onboarding: [...]
+
+DATOS OPERATIVOS
+Disponibilidad horaria: [...]
+Modalidad acordada: [...]
+Info de contacto: [...]
+
+NUESTRA RECOMENDACIÓN
+[Tip breve para el hiring manager sobre cómo potenciar a esta persona desde el arranque]`
+  },
+
+  // ---- CANDIDATOS ----
+  {
+    id:"jd-publica", cat:"candidatos", icon:"✨", title:"JD pública para HeyOmia",
+    content:`[Nombre del rol] en [Empresa] ✨
+
+[1-2 líneas de gancho sobre el desafío del rol o el momento de la empresa]
+
+¿CUÁL ES EL DESAFÍO?
+[Misión del rol en tono cercano]
+
+¿QUÉ VAS A HACER?
+- [Responsabilidad 1]
+- [Responsabilidad 2]
+- [Responsabilidad 3]
+
+¿QUÉ BUSCAMOS EN VOS?
+- [Requisito excluyente 1]
+- [Requisito excluyente 2]
+- [Deseable]
+
+¿QUÉ TE OFRECEMOS?
+- [Beneficio 1] 🎯
+- [Beneficio 2]
+- [Modalidad]
+
+PREGUNTAS DE POSTULACIÓN
+1. [Pregunta filtro sobre experiencia excluyente]
+2. [Pregunta sobre motivación/disponibilidad]
+3. [Pregunta sobre pretensión salarial]
+
+FASES DEL PROCESO
+Postulación → Entrevista Kodo → Entrevista [Empresa] → [Instancia adicional si aplica] → Oferta
+
+CRITERIOS DE SCORING
+[Qué respuestas puntúan alto/bajo para pre-filtrar automáticamente — se define por búsqueda]`
+  },
+  {
+    id:"msg-proactivo", cat:"candidatos", icon:"👋", title:"Mensaje proactivo (sourcing)",
+    content:`Hola [Nombre]! [Mi nombre] de Kodo 👋 Estoy a cargo del rol de [Rol] en [Empresa], donde el principal desafío es [desafío]. Viendo tu experiencia en [experiencia puntual], creo que podés ser un gran match. Te dejo más info acá: [link HeyOmia]. Si te copa, quedo a disposición para charlarlo en un meet. ¡Abrazo! 🖤`
+  },
+  {
+    id:"resp-avance", cat:"candidatos", icon:"🙌", title:"Respuesta a postulación — Avanza",
+    content:`Hola [Nombre]! Gracias por postularte a [Rol] 🙌 Ya vimos tu perfil y queremos seguir conociéndote. Te propongo coordinar un meet — ¿tenés disponibilidad esta semana?`
+  },
+  {
+    id:"resp-no-avance", cat:"candidatos", icon:"🖤", title:"Respuesta a postulación — No avanza",
+    content:`Hola [Nombre]! Gracias por tu tiempo e interés en [Rol]. Después de revisar tu perfil, esta vez no vamos a avanzar porque [motivo puntual y constructivo]. Igual quedás en nuestra base para futuras búsquedas que puedan matchear mejor con tu perfil. ¡Éxitos! 🖤`
+  },
+  {
+    id:"feedback-avance", cat:"candidatos", icon:"➡️", title:"Feedback post entrevista — Avanza",
+    content:`Hola [Nombre]! Fue un gusto conocerte. Queremos avanzar a la próxima instancia: [detalle de próximo paso]. Te escribimos a la brevedad para coordinar.`
+  },
+  {
+    id:"feedback-no-avance", cat:"candidatos", icon:"💬", title:"Feedback post entrevista — No avanza",
+    content:`Hola [Nombre]! Gracias por el tiempo dedicado a la entrevista. Esta vez no vamos a seguir adelante porque [feedback específico y de valor: ej. seniority, expectativa salarial, fit con el desafío puntual]. [Opcional: fortaleza destacada que le sirva a futuro]. Fue un gusto conocerte y esperamos cruzarnos en otra oportunidad 🖤`
+  },
+  {
+    id:"correo-bienvenida", cat:"candidatos", icon:"🎉", title:"Correo de bienvenida/éxitos + encuesta",
+    content:`Asunto: ¡Hoy es el día! 🎉
+
+Hola [Nombre de Persona]
+
+¡Hoy es el día! Estamos súper contentas de que comiences oficialmente en [Nombre de Empresa]
+
+Desde KodoHR (https://www.kodohr.com.ar/), queremos felicitarte por este gran paso y desearte toda la suerte en esta nueva etapa
+
+Sabemos que generalmente los primeros días pueden ser un poco intensos, pero estamos seguras de que te vas a integrar súper bien y que tu energía va a sumar mucho al equipo!
+
+Antes de que te sumerjas en esta nueva aventura, nos encantaría conocer cómo fue tu experiencia en el proceso de selección!
+
+Agradecemos mucho tu feedback, así que aquí te dejamos el enlace para la encuesta > #KodoExperience: https://docs.google.com/forms/d/e/1FAIpQLSfl5e7uENsbgOKfYIgJPp6muV3_WM5Un2Dfkl-lHLC0uWL2VA/viewform?usp=sf_link
+
+¡Mil gracias por compartir tus impresiones! Estamos seguras de que la vas a romper en este nuevo desafío
+
+¡Que tengas un excelente primer día!
+
+Abrazo!
+
+El equipo de KodoHR`
+  }
+];
+
+const templatesById = {};
+templates.forEach(t=>{ templatesById[t.id] = t; });
+
+const catLabels = {
+  general:{title:"Gestión general", desc:"Uso interno del equipo — antes de que el cliente vea nada."},
+  cliente:{title:"Cliente / Hiring Manager", desc:"Todo lo que se comunica hacia afuera con la empresa."},
+  candidatos:{title:"Candidatos", desc:"Mensajes y correos en tono Kodo para cada etapa del candidato."}
+};
+
+const container = document.getElementById('tpl-container');
+
+function renderTemplates(filter){
+  container.innerHTML = "";
+  const cats = filter === "all" ? Object.keys(catLabels) : [filter];
+  cats.forEach(cat=>{
+    const items = templates.filter(t=>t.cat===cat);
+    if(!items.length) return;
+    const catTitle = document.createElement('h3');
+    catTitle.className = 'cat-title rounded';
+    catTitle.textContent = catLabels[cat].title;
+    const catDesc = document.createElement('p');
+    catDesc.className = 'cat-desc';
+    catDesc.textContent = catLabels[cat].desc;
+    const grid = document.createElement('div');
+    grid.className = 'card-grid';
+    items.forEach(t=>{
+      const card = document.createElement('div');
+      card.className = 'tpl-card';
+      card.innerHTML = `<span class="icon">${t.icon}</span><h4>${t.title}</h4><span class="open">Ver template →</span>`;
+      card.addEventListener('click', ()=>openModal(t));
+      grid.appendChild(card);
+    });
+    container.appendChild(catTitle);
+    container.appendChild(catDesc);
+    container.appendChild(grid);
+  });
+}
+renderTemplates("all");
+
+document.querySelectorAll('.cat-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    renderTemplates(btn.dataset.cat);
+  });
+});
+
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+    document.getElementById(btn.dataset.view).classList.add('active');
+  });
+});
+
+const overlay = document.getElementById('overlay');
+const modalTitle = document.getElementById('modal-title');
+const modalContent = document.getElementById('modal-content');
+const modalCopy = document.getElementById('modal-copy');
+let currentContent = "";
+
+function openModal(t){
+  modalTitle.textContent = t.title;
+  modalContent.textContent = t.content;
+  currentContent = t.content;
+  modalCopy.textContent = "📋 Copiar template";
+  modalCopy.classList.remove('copied');
+  overlay.classList.add('active');
+}
+document.getElementById('modal-close').addEventListener('click', ()=>overlay.classList.remove('active'));
+overlay.addEventListener('click', (e)=>{ if(e.target===overlay) overlay.classList.remove('active'); });
+
+// ---------- PROCESO / TIMELINE ----------
+const steps = [
+  {
+    title:"Inicio de la búsqueda",
+    html:"<p>Quien recibe el pedido del cliente releva preliminarmente todo lo posible: empresa, momento del negocio, contexto, JD, requisitos, banda salarial, beneficios, reemplazo o rol nuevo, a quién reporta, gente a cargo. Con eso arma la JD interna preliminar.</p>",
+    tpls:["jd-interna"]
+  },
+  {
+    title:"Asignación de la búsqueda",
+    html:`<p>El paso que sigue es la asignación. Según la disponibilidad, la experiencia previa en la empresa y/o en el rubro o rol, la búsqueda se asigna bajo alguno de estos esquemas:</p>
+    <ul>
+      <li><strong>100%</strong> — la lleva una sola persona.</li>
+      <li><strong>80/20</strong> — ownership de una con guía y/o soporte de la otra (primera vez en esa empresa o en esa posición).</li>
+      <li><strong>50/50</strong> — la llevan las dos a la par, se organizan entre ellas según agenda y demás compromisos.</li>
+    </ul>`,
+    tpls:[]
+  },
+  {
+    title:"Carpeta, estudio de la búsqueda y kickoff",
+    html:`<p>Al recibir la asignación, la reclutadora crea una carpeta en el <a href="https://drive.google.com/drive/folders/13rYhU8jlIqOGOHFddWdGtCCV5co4FPLR?usp=sharing" target="_blank" rel="noopener">Drive de Reclutamiento</a> con la nomenclatura <strong>Nombre de la empresa - Nombre de la posición</strong>. Ahí va dejando toda la info del proceso: ternas, CVs, JD, etc.</p>
+    <p>En paralelo, estudia la búsqueda, anota todas las dudas o consultas que le surjan y busca 2-3 perfiles de referencia. Con eso, coordina el kickoff enviando el correo correspondiente.</p>`,
+    tpls:["correo-kickoff"]
+  },
+  {
+    title:"Reunión de kickoff",
+    html:"<p>Por Meet. Debe cerrar con: JD 100% aprobada, claridad del proceso (entrevistas, con quién, modalidad, horarios), info de preocupacionales, timing de próxima terna, y canal de comunicación acordado.</p>",
+    tpls:["esquema-reunion","jd-aprobada"]
+  },
+  {
+    title:"Publicación y búsqueda de perfiles",
+    html:`<p>Se da de alta la vacante en <a href="https://admin-kodohr.heyomia.com/login" target="_blank" rel="noopener">HeyOmia</a> y se activan publicaciones y/o hunting.</p>`,
+    tpls:["jd-publica"]
+  },
+  {
+    title:"Contacto con candidatos",
+    html:`<p>Mensajes proactivos personalizados, respuestas a postulaciones (avance y no avance) y feedback post entrevista.</p>
+    <p>En todos los casos, pensando en que el contacto le sirva a la persona para sus próximos procesos de selección — no es solo trámite, es una oportunidad de sumarle valor real, siga o no en este proceso.</p>`,
+    tpls:["esquema-entrevista","msg-proactivo","resp-avance","resp-no-avance","feedback-avance","feedback-no-avance"]
+  },
+  {
+    title:"Análisis de candidatos",
+    html:`<p>Antes de armar la terna, se analizan y comparan los perfiles relevados contra la JD aprobada: fit con excluyentes y deseables, fortalezas concretas, señales de riesgo y ranking relativo entre candidatos.</p>
+    <p>Para que este análisis sea consistente entre búsquedas y no dependa solo del criterio individual, usamos un prompt estructurado en las <strong>4C</strong> — Contexto, Contenido, Criterio y Comprobación.</p>`,
+    tpls:["prompt-analisis-4c"]
+  },
+  {
+    title:"Envío de ternas",
+    html:"<p>Por correo, con el informe formato Kodo. Se pide al cliente su impresión de cada perfil y, ante feedback negativo, motivos precisos para afinar el criterio.</p>",
+    tpls:["correo-terna","informe-terna"]
+  },
+  {
+    title:"Definición de finalista",
+    html:"<p>Se solicita al cliente definir preocupacionales (quién los gestiona) y oferta (la arma el cliente o Kodo), más las claves: salario, condiciones, vacaciones, fecha preliminar de ingreso.</p>",
+    tpls:["correo-definiciones","offer-modelo"]
+  },
+  {
+    title:"Comunicación y envío de oferta",
+    html:"<p>Se avisa al candidato que va a recibir oferta. Si la envía Kodo, va por correo con el adjunto y copia al cliente.</p>",
+    tpls:["correo-oferta"]
+  },
+  {
+    title:"Acompañamiento (antes y durante)",
+    html:`<p>Acompañamiento en ambos sentidos de todo lo referido a preocupacionales y coordinaciones intermedias. Con todo ok, se confirma al candidato la fecha de ingreso.</p>
+    <p>Acá también se envía al hiring manager el mail con la Ficha de Ingreso — se manda en este paso porque es previo al ingreso, para que pueda preparar el onboarding con tiempo.</p>`,
+    tpls:["correo-hm-ficha","ficha-ingreso"]
+  },
+  {
+    title:"Día de ingreso",
+    html:`<ul>
+      <li>Mail de bienvenida + encuesta de satisfacción al candidato, el día de ingreso.</li>
+      <li>Formulario de retro y cierre de la búsqueda.</li>
+    </ul>`,
+    tpls:["correo-bienvenida"]
+  }
+];
+
+const timelineEl = document.getElementById('timeline');
+steps.forEach((s,i)=>{
+  const step = document.createElement('div');
+  step.className = 'step';
+  const tplsHtml = s.tpls && s.tpls.length
+    ? `<div class="step-tpls">
+        <span class="step-tpls-label">Templates de este paso:</span>
+        ${s.tpls.map(id=>`<button class="tpl-chip" data-tpl="${id}">${templatesById[id].icon} ${templatesById[id].title}</button>`).join('')}
+      </div>`
+    : '';
+  step.innerHTML = `
+    <div class="step-header">
+      <div class="num blocky">${String(i+1).padStart(2,'0')}</div>
+      <h3>${s.title}</h3>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="step-detail"><div class="step-detail-inner">${s.html}${tplsHtml}</div></div>
+  `;
+  step.querySelector('.step-header').addEventListener('click', ()=>{
+    step.classList.toggle('open');
+  });
+  step.querySelectorAll('.tpl-chip').forEach(btn=>{
+    btn.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      openModal(templatesById[btn.dataset.tpl]);
+    });
+  });
+  timelineEl.appendChild(step);
+});
+
+// ---------- CRITERIOS / PROTOCOLOS ----------
+const protocols = [
+  {
+    icon:"📵",
+    situacion:"Si el candidato no responde",
+    html:`<p class="accion">Agotar todas las vías antes de descartar: mail, WhatsApp y llamada — con tiempos espaciados y razonables entre cada intento.</p>`
+  },
+  {
+    icon:"🎯",
+    situacion:"Al enviar ternas",
+    html:`<p class="accion">Sobre todo en la primera terna: siempre seguimos trabajando en paralelo en perfiles de backup. Nunca nos quedamos solo con los perfiles ya enviados.</p>`
+  },
+  {
+    icon:"📵",
+    situacion:"Si el hiring manager no responde",
+    html:`<p class="accion">Agotar todas las vías: mail, WhatsApp y llamada — con tiempos espaciados y razonables. Si aun así sigue sin respuesta, avisar a Cande y/o Mer según el caso para que se contacten directo.</p>`
+  },
+  {
+    icon:"🔄",
+    situacion:"Si vamos por la 2ª terna y/o ya se presentaron más de 4 perfiles, con muchas dudas del hiring manager",
+    html:`<p class="accion">Se agenda un meet de re-calibración para volver a alinear expectativas con el cliente y entender qué es lo que no está cerrando.</p>`
+  },
+  {
+    icon:"🖤",
+    situacion:"Regla general — cuando hay que dar una mala noticia al cliente",
+    html:`<p>Ej: se cayó un candidato que le gustaba.</p><p class="accion">Siempre se acompaña de una alternativa concreta. Ej: "Te traigo este nuevo candidato / esta nueva terna que se le equipara, lista para que la conozcas."</p>`
+  }
+];
+
+const protocolContainer = document.getElementById('protocol-container');
+const protocolList = document.createElement('div');
+protocolList.className = 'protocol-list';
+protocols.forEach(p=>{
+  const card = document.createElement('div');
+  card.className = 'protocol-card';
+  card.innerHTML = `
+    <div class="p-icon">${p.icon}</div>
+    <div>
+      <span class="situacion">${p.situacion}</span>
+      ${p.html}
+    </div>
+  `;
+  protocolList.appendChild(card);
+});
+protocolContainer.appendChild(protocolList);
+
+modalCopy.addEventListener('click', ()=>{
+  const fallbackCopy = ()=>{
+    const ta = document.createElement('textarea');
+    ta.value = currentContent;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    try{ document.execCommand('copy'); }catch(e){}
+    document.body.removeChild(ta);
+  };
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(currentContent).catch(fallbackCopy);
+  } else {
+    fallbackCopy();
+  }
+  modalCopy.textContent = "¡Copiado! 🖤";
+  modalCopy.classList.add('copied');
+  setTimeout(()=>{
+    modalCopy.textContent = "📋 Copiar template";
+    modalCopy.classList.remove('copied');
+  }, 1800);
+});
+</script>
+
+</body>
+</html>

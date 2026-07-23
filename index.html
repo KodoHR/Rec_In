@@ -631,9 +631,9 @@ Hola [Nombre],
 
 ¡Un gusto! Soy [Nombre], y voy a estar liderando la búsqueda de [Rol] para [Empresa].
 
-Ya me metí de lleno a estudiar la posición y quiero coordinar un breve meet para terminar de calibrar algunos puntos con vos.
+Estuve estudiando la posición con toda la info que nos compartiste/compartieron previamente, y me gustaría coordinar un breve meet para terminar de calibrar algunos puntos.
 
-De paso, te comparto 2-3 perfiles a modo de referencia (no son necesariamente candidatos del proceso, sirven para calibrar juntos qué sí y qué no):
+Un ejercicio interesante para esto es que, en la medida de lo posible, puedas/n ver los perfiles que comparto a continuación (no son necesariamente candidatos del proceso, sirven para calibrar juntos qué sí y qué no):
 [Perfil 1 – link]
 [Perfil 2 – link]
 [Perfil 3 – link]
@@ -699,6 +699,8 @@ Quedamos atentas. ¡Gracias! 🖤
     id:"informe-terna", cat:"cliente", icon:"📊", title:"Informe de Perfil — formato Kodo",
     content:`Se arma un Informe de Perfil por cada candidato de la terna (uno por persona, mismo formato) — no es un único documento con los 3 perfiles listados.
 
+Modelo de documento (Google Doc): https://docs.google.com/document/d/12yAq7RnymtM54w86TvSMr0paPnYggs28ZGpzNUvWdRo/edit?usp=sharing
+
 INFORME DE PERFIL
 
 [Nombre completo del candidato]
@@ -762,7 +764,9 @@ Apenas tengamos esto, avanzamos con [Nombre candidato] a toda velocidad 🚀
   },
   {
     id:"offer-modelo", cat:"cliente", icon:"💼", title:"Modelo de Offer propia",
-    content:`PROPUESTA DE INCORPORACIÓN
+    content:`Modelo de documento (Canva): https://canva.link/j56tygsfg0aodo9
+
+PROPUESTA DE INCORPORACIÓN
 [Fecha]
 
 Estimado/a [Nombre candidato],
@@ -1042,12 +1046,12 @@ const steps = [
   },
   {
     title:"Envío de ternas",
-    html:"<p>Por correo, con el informe formato Kodo. Se pide al cliente su impresión de cada perfil y, ante feedback negativo, motivos precisos para afinar el criterio.</p>",
+    html:`<p>Por correo, con el Informe de Perfil formato Kodo (modelo de documento <a href="https://docs.google.com/document/d/12yAq7RnymtM54w86TvSMr0paPnYggs28ZGpzNUvWdRo/edit?usp=sharing" target="_blank" rel="noopener">acá</a>). Se pide al cliente su impresión de cada perfil y, ante feedback negativo, motivos precisos para afinar el criterio.</p>`,
     tpls:["correo-terna","informe-terna"]
   },
   {
     title:"Definición de finalista",
-    html:"<p>Se solicita al cliente definir preocupacionales (quién los gestiona) y oferta (la arma el cliente o Kodo), más las claves: salario, condiciones, vacaciones, fecha preliminar de ingreso.</p>",
+    html:`<p>Se solicita al cliente definir preocupacionales (quién los gestiona) y oferta (la arma el cliente o Kodo, con nuestro <a href="https://canva.link/j56tygsfg0aodo9" target="_blank" rel="noopener">modelo de Offer</a>), más las claves: salario, condiciones, vacaciones, fecha preliminar de ingreso.</p>`,
     tpls:["correo-definiciones","offer-modelo"]
   },
   {
@@ -1065,7 +1069,7 @@ const steps = [
     title:"Día de ingreso",
     html:`<ul>
       <li>Mail de bienvenida + encuesta de satisfacción al candidato, el día de ingreso.</li>
-      <li>Formulario de retro y cierre de la búsqueda.</li>
+      <li>La reclutadora completa el formulario de retro y cierre de la búsqueda — funciona como retrospectiva del proceso: <a href="https://docs.google.com/forms/d/e/1FAIpQLSeqqipWCjZ_xrxQYBJM7bLxsIeAL8D8U9eHa7sJrWKQhWJbSA/viewform?usp=header" target="_blank" rel="noopener">completar acá</a>.</li>
     </ul>`,
     tpls:["correo-bienvenida"]
   }
